@@ -110,12 +110,12 @@ def update_user(id):
     return jsonify({"message": "User fully updated"})
 
 
+# Uses jwt_token to retrieve id . Then using that patch the body to db
 @user_bp.route("/partial_update", methods=["PATCH"])
 @jwt_required()
 def patch_user(id):
     user_id = get_jwt_identity()
     user = User.query.get_or_404(user_id)
-
     data = request.get_json(force=True)
 
     if not data:
@@ -133,6 +133,7 @@ def patch_user(id):
 
 @user_bp.route("/<int:id>", methods=["DELETE"])
 def delete_user(id):
+    # get_or_404 , get or else throw a status code of 404 which is user not found   
     user = User.query.get_or_404(id)
     db.session.delete(user)
     db.session.commit()
