@@ -4,11 +4,12 @@ from extensions import db
 from utils.password_utils import hash_password
 
 def load_users_from_json():
-    # If DB already has users → don't insert again
+    # Skip to insert , if already user exist
     if User.query.first():
         print("Users already exist. Skipping JSON load.")
         return
 
+    # Default load goes here
     try:
         with open("users.json") as f:
             users = json.load(f)

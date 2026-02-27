@@ -16,11 +16,9 @@ def create_app():
     app.register_blueprint(user_bp, url_prefix="/api/users")
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
 
-    # RUN ONCE WHEN APP STARTS
+    # Initillay load the default users into DB
     with app.app_context():
         db.create_all()
-
-        # load users from JSON only first time
         from utils.load_user import load_users_from_json
         load_users_from_json()
 

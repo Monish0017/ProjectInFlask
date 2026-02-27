@@ -7,6 +7,7 @@ from utils.password_utils import hash_password
 
 user_bp = Blueprint("users", __name__)
 
+# Function used to convert the SQL Alchemy to Dict
 def user_to_dict(user):
     return {
         "id": user.id,
@@ -58,6 +59,7 @@ def get_users():
 
     users = query.all()
 
+    # from dict convert to JSON
     return jsonify([user_to_dict(u) for u in users])
 
 
@@ -114,7 +116,7 @@ def update_user(id):
 @user_bp.route("/partial_update", methods=["PATCH"])
 @jwt_required()
 def patch_user(id):
-    user_id = get_jwt_identity()
+    user_id = get_jwt_identity() # Get the id from token , using the global secret we declared in app.py
     user = User.query.get_or_404(user_id)
     data = request.get_json(force=True)
 
